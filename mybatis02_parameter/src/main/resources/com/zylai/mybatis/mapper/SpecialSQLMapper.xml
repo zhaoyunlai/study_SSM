@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zylai.mybatis.mapper.SpecialSQLMapper">
+
+    <!--List<User> getUserByLike(@Param("keyword") String keyword);-->
+    <!--在单引号中占位符会被解析为字符串-->
+
+    <!--select * from t_user where username like '%${keyword}%'-->
+    <!--select * from t_user where username like concat('%',#{keyword},'%')-->
+    <select id="getUserByLike" resultType="User">
+        select * from t_user where username like "%"#{keyword}"%"
+    </select>
+
+    <!--void deleteMoreUser(@Param("ids") String ids);-->
+    <!--这里只能使用${}，因为使用#{}会自动加上一个单引号出现错误。
+        所以使用${}不会自动加上单引号，不使用占位符赋值-->
+    <delete id="deleteMoreUser">
+        delete from t_user where id in(${ids})
+    </delete>
+
+    <!--List<User> getUserList(@Param("tableName") String tableName);-->
+    <!--同上，这里也不能用#{}，因为表名不能使用单引号-->
+    <select id="getUserList" resultType="User">
+        select * from ${tableName}
+    </select>
+
+    <!--void insertUser(User user);-->
+    <!--不能把主键值作为返回值是因为增删改的返回值固定为影响行数
+        所以把获取的主键放到传入对象User的指定属性keyProperty中
+
+        useGeneratedKeys:表示添加功能使用了自增的主键
+        keyProperty：指定将主键值赋值给实体类的参数
+        -->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values(null,#{username},#{password},#{age},#{gender},#{email})
+    </insert>
+
+</mapper>

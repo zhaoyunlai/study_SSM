@@ -11,6 +11,8 @@
     <modules>
         <module>mybatis01_hellowrold</module>
         <module>mybatis02_parameter</module>
+        <module>mybatis03_resultMap</module>
+        <module>mybatis04_dynamicSQL</module>
     </modules>
 
     <properties>
