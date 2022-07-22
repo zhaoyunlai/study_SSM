@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zylai.mybatis.mapper.DynamicSQLMapper">
+
+    <!--
+        动态SQL：
+        1、if，通过test属性中的表达式判断标签中的内容是否有效（是否会拼接到SQL中）
+        2、where
+          1.若where标签中有条件成立，会自动生成一个where关键字进行拼接
+          2.会自动将where标签中内容前多余的and去掉,
+          但是不会加and，所以在第一个if之后的语句都要加and
+          也不会将内容后的and去掉
+          3.如果没有任何一个条件成立，则where没有任何功能，即不会生成where关键字
+        3、trim
+           prefix，suffix：在整个标签内容前面或后面添加指定的内容
+           prefixOverrides,suffixOverrides:在标签中内容前面或后面添加指定的内容
+        4、choose、when、otherwise
+           例如
+           choose: when(){}
+                   when(){}
+                   when(){}
+                   otherwise(){}
+           相当于java中的if(){}
+                        else if(){}
+                        else if(){}
+                        else{}
+           when至少设置一个，otherwise做多设置一个
+           即只要一个条件满足，后面的条件就不会再判断了
+         5、foreach
+           collection：设置要循环的数组或集合
+           item：用一个字符串表示数组或集合中的每一个数据
+           separator：设置每次循环的数据之间的分隔符
+           open：循环体之前以什么开始
+           close：循环体之后以什么结束
+         6、sql片段
+            可以记录一段sql，在需要用的地方使用include标签进行引用
+             <sql id="empColumns">
+                 emp_id,emp_name,age,gender,dept_id
+             </sql>
+
+             <include refid="empColumns"/>
+    -->
+
+    <sql id="empColumns">
+        emp_id,emp_name,age,gender,dept_id
+    </sql>
+
+    <!--List<Emp> getEmpByCondition(Emp emp);-->
+    <select id="getEmpByCondition" resultType="Emp">
+        select <include refid="empColumns"/> from t_emp
+        <trim prefix="where" suffixOverrides="and">
+            <if test="empName != null and empName != ''">
+                emp_name = #{empName} and
+            </if>
+            <if test="age != null and age != ''">
+                 age = #{age} and
+            </if>
+            <if test="gender != null and gender != ''">
+                 gender = #{gender}
+            </if>
+        </trim>
+    </select>
+
+    <!--
+        2、where
+    -->
+    <select id="getEmpByConditionTwo" resultType="Emp">
+        select * from t_emp
+        <where>
+            <if test="empName != null and empName != ''">
+                 emp_name = #{empName}
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </where>
+    </select>
+
+    <!--
+        1、if标签
+        需要在where后面紧接着跟上一个恒成立的条件（也可以直接写true），
+        然后在每个拼接的条件前面加上and
+    -->
+    <select id="getEmpByConditionOld" resultType="Emp">
+        select * from t_emp where 1=1
+        <if test="empName != null and empName != ''">
+            and emp_name = #{empName}
+        </if>
+        <if test="age != null and age != ''">
+            and age = #{age}
+        </if>
+        <if test="gender != null and gender != ''">
+            and gender = #{gender}
+        </if>
+    </select>
+
+
+    <!--List<Emp> getEmpByChoose(Emp emp);-->
+    <!--when中有一个条件满足就不会去拼接了-->
+    <select id="getEmpByChoose" resultType="Emp">
+        select * from t_emp
+        <where>
+            <choose>
+                <when test="empName != null and empName != ''">
+                    emp_name=#{empName}
+                </when>
+                <when test="age != null and age != ''">
+                    age=#{age}
+                </when>
+                <when test="gender != null and gender != ''">
+                    gender=#{gender}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+
+    <!--foreach标签-->
+    <!--void insertBatchEmp(List<Emp> empList);-->
+    <insert id="insertBatchEmp">
+        insert into t_emp values
+        <foreach collection="empList" item="emp" separator=",">
+            (null,#{emp.empName},#{emp.age},#{emp.gender},null)
+        </foreach>
+    </insert>
+
+    <!--void deleteBatchEmp(@Param("empIds") Integer[] empIds);-->
+    <delete id="deleteBatchEmpOne">
+        delete from t_emp where emp_id in
+        <foreach collection="empIds" item="empId" separator="," open="(" close=")">
+            #{empId}
+        </foreach>
+    </delete>
+
+    <!--void deleteBatchEmp(@Param("empIds") Integer[] empIds);-->
+    <delete id="deleteBatchEmp">
+        delete from t_emp where
+        <foreach collection="empIds" item="empId" separator="or">
+            emp_id = #{empId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--核心配置文件主要用于配置连接数据库的环境以及MyBatis的全局配置信息-->
+<configuration>
+    <!--
+        MyBatis核心配置文件中的标签必须要按照指定的顺序配置：
+        (properties?,settings?,typeAliases?,typeHandlers?,objectFactory?,
+        objectWrapperFactory?,reflectorFactory?,plugins?,environments?,
+        databaseIdProvider?,mappers?)
+    -->
+
+    <properties resource="jdbc.properties"/>
+    
+    <settings>
+        <!--设置将下划线映射为驼峰-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!--开启延迟加载
+            对于分步查询，关联的对象将会延迟加载。
+            比如获取emp信息，如果只是打印emp.getEmpName()，用不到Dept的信息
+            那么查询Dept的第二步将不会执行。
+        -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!--value为false时按需加载-->
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+
+    <typeAliases>
+        <!--通过包来设置类型别名，指定包下所有的类型将全部拥有默认的别名，即类名且不区分大小写-->
+        <package name="com.zylai.mybatis.pojo"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!--注意，这里是mysql8.0的配置，如果是mysql5，就是com.mysql.jdbc.Driver-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--    引入mybatis的映射文件-->
+    <mappers>
+        <package name="com.zylai.mybatis.mapper"/>
+    </mappers>
+</configuration>

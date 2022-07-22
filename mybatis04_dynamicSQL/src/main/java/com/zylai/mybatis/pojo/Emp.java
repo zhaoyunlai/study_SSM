@@ -2,7 +2,7 @@ package com.zylai.mybatis.pojo;
 
 /**
  * @Author: Zhao YunLai
- * @Date: 2022/07/21/17:07
+ * @Date: 2022/07/22/11:10
  * @Description:
  */
 public class Emp {
@@ -14,9 +14,14 @@ public class Emp {
 
     private String gender;
 
-    private Dept dept;
-
     public Emp() {
+    }
+
+    public Emp(Integer empId, String empName, Integer age, String gender) {
+        this.empId = empId;
+        this.empName = empName;
+        this.age = age;
+        this.gender = gender;
     }
 
     @Override
@@ -24,9 +29,8 @@ public class Emp {
         return "Emp{" +
                 "empId=" + empId +
                 ", empName='" + empName + '\'' +
-                ", age='" + age + '\'' +
+                ", age=" + age +
                 ", gender='" + gender + '\'' +
-                ", dept=" + dept +
                 '}';
     }
 
@@ -60,13 +64,5 @@ public class Emp {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public Dept getDept() {
-        return dept;
-    }
-
-    public void setDept(Dept dept) {
-        this.dept = dept;
     }
 }
