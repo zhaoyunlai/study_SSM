@@ -7,6 +7,7 @@ import com.zylai.mybatis.utils.SqlSessionUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +49,16 @@ public class MBGTest {
 //        mapper.updateByPrimaryKey(emp);
         //测试选择性修改
         mapper.updateByPrimaryKeySelective(emp);
+    }
+
+    @Test
+    public void testAdd(){
+        SqlSession sqlSession = SqlSessionUtil.getSqlSession();
+        EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
+        for (int i = 0; i < 30; i++) {
+            Emp emp = new Emp(null, "aa" + i, 10 + i, "女");
+            mapper.insert(emp);
+        }
     }
 
 

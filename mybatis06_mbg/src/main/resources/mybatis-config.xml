@@ -23,6 +23,11 @@
         <package name="com.zylai.mybatis.pojo"/>
     </typeAliases>
 
+    <plugins>
+        <!--设置分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
