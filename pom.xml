@@ -14,6 +14,7 @@
         <module>mybatis03_resultMap</module>
         <module>mybatis04_dynamicSQL</module>
         <module>mybatis05_cache</module>
+        <module>mybatis06_mbg</module>
     </modules>
 
     <properties>
