@@ -15,6 +15,9 @@
         <module>mybatis04_dynamicSQL</module>
         <module>mybatis05_cache</module>
         <module>mybatis06_mbg</module>
+        <module>spring01_helloworld</module>
+        <module>spring02_ioc_xml</module>
+        <module>spring03_ioc_annotation</module>
     </modules>
 
     <properties>

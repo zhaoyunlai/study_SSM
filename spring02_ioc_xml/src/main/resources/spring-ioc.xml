@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--注意，这里将Student配置了多个bean，实际上不会这样，都是一个bean，这里只是为了测试方便-->
+
+    <!--sping创建的对象是单例的，可以通过设置属性来得到多例的-->
+    <bean id="studentOne" class="com.zylai.spring.pojo.Student"></bean>
+
+    <!--主要属性和成员变量的区别-->
+    <bean id="studentTwo" class="com.zylai.spring.pojo.Student">
+        <!--
+            property：通过成员变量的set方法进行赋值
+            name：设置需要赋值的属性名（和set方法有关，set方法名，去掉set之后首字母大写）
+            value：设置属性的值
+        -->
+        <property name="sid" value="1001"/>
+        <property name="sname" value="张三"/>
+        <property name="age" value="23"/>
+        <property name="gender" value="男"/>
+    </bean>
+
+    <bean id="studentThree" class="com.zylai.spring.pojo.Student">
+        <constructor-arg value="1002"/>
+        <constructor-arg value="李四"/>
+        <constructor-arg value="女"/>
+        <constructor-arg value="23" name="age"/>
+    </bean>
+
+    <!--特殊值处理-->
+    <bean id="studentFour" class="com.zylai.spring.pojo.Student">
+        <property name="sid" value="1003"/>
+        <!--
+            对于特殊字符，应该使用该特殊字符对应的实体
+            <  &lt;
+            >  &gt;
+
+            另外也可以使用CDATA节其中的内容会原样解析,
+            CDATA节是xml中一个特殊的标签，不能写在属性中，只能通过一个标签写入
+        -->
+        <!--<property name="sname" value="&lt;王五&gt;"/>-->
+        <property name="sname">
+            <value><![CDATA[<王五>]]></value>
+        </property>
+        <property name="gender">
+            <!--使性别这个属性为null-->
+            <null/>
+        </property>
+    </bean>
+
+    <!--
+        类类型的属性赋值
+        1.ref
+        2.级联
+        3.内部bean
+    -->
+    <bean id="studentFive" class="com.zylai.spring.pojo.Student">
+        <property name="sid" value="1006"/>
+        <property name="sname" value="张六"/>
+        <property name="age" value="23"/>
+        <property name="gender" value="男"/>
+        <!--ref引用IOC容器中的某个bean的id-->
+        <!--<property name="clazz" ref="clazzOne"/>-->
+        <!--级联的方式，要求clazz属性赋值或者实例化。所以一般不用-->
+        <!--<property name="clazz.cid" value="1122"/>-->
+        <!--<property name="clazz.cname" value="哈哈班"/>-->
+
+
+        <!--内部bean，在属性中设置一个bean。
+        注意：不能通过ioc容器获取，相当于内部类，只能在当前student内使用-->
+        <property name="clazz">
+            <bean id="clazzInner" class="com.zylai.spring.pojo.Clazz">
+                <property name="cid" value="1122"/>
+                <property name="cname" value="王班"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="clazzOne" class="com.zylai.spring.pojo.Clazz">
+        <property name="cid" value="1111"/>
+        <property name="cname" value="王者班"/>
+    </bean>
+
+    <!--数组-->
+    <bean id="studentSix" class="com.zylai.spring.pojo.Student">
+        <property name="sid" value="1006"/>
+        <property name="sname" value="张六"/>
+        <property name="age" value="23"/>
+        <property name="gender" value="男"/>
+        <property name="clazz">
+            <bean id="clazzInner" class="com.zylai.spring.pojo.Clazz">
+                <property name="cid" value="1122"/>
+                <property name="cname" value="王班"/>
+            </bean>
+        </property>
+        <property name="hobbies">
+            <array>
+                <value>唱</value>
+                <value>跳</value>
+                <value>rap</value>
+            </array>
+        </property>
+
+        <!--map集合，和list差不多，就是需要设置键值对。第二种方式就是util了-->
+        <!--<property name="teacherMap">-->
+        <!--    <map>-->
+        <!--        <entry key="语文老师" value-ref="teacherOne"/>-->
+        <!--        <entry key="数学老师" value-ref="teacherTwo"/>-->
+        <!--    </map>-->
+        <!--</property>-->
+        <property name="teacherMap" ref="teacherMap"/>
+    </bean>
+
+    <bean id="teacherOne" class="com.zylai.spring.pojo.Teacher">
+        <property name="tid" value="10086"/>
+        <property name="tname" value="大宝"/>
+    </bean>
+    <bean id="teacherTwo" class="com.zylai.spring.pojo.Teacher">
+        <property name="tid" value="10010"/>
+        <property name="tname" value="小宝"/>
+    </bean>
+
+    <!--
+        list集合
+        1.在属性中使用list标签
+        2.再写一个集合类型的bean
+    -->
+    <bean id="clazzTwo" class="com.zylai.spring.pojo.Clazz">
+        <property name="cid" value="1111"/>
+        <property name="cname" value="王者班"/>
+        <property name="studentList" ref="studentList">
+            <!--<list>-->
+            <!--    <ref bean="studentOne"/>-->
+            <!--    <ref bean="studentTwo"/>-->
+            <!--    <ref bean="studentThree"/>-->
+            <!--</list>-->
+        </property>
+    </bean>
+
+    <!--配置一个集合类型的bean，需要使用util的约束-->
+    <util:list id="studentList">
+        <ref bean="studentFour"/>
+        <ref bean="studentFive"/>
+        <ref bean="studentSix"/>
+    </util:list>
+
+    <util:map id="teacherMap">
+        <entry key="语文老师" value-ref="teacherOne"/>
+        <entry key="数学老师" value-ref="teacherTwo"/>
+    </util:map>
+
+
+    <!--p命名空间，需要在xml文件最开始设置引入-->
+    <bean id="studentSeven" class="com.zylai.spring.pojo.Student"
+          p:sid="1008" p:sname="小红" p:clazz-ref="clazzOne"
+          p:teacherMap-ref="teacherMap">
+
+    </bean>
+
+
+
+</beans>
