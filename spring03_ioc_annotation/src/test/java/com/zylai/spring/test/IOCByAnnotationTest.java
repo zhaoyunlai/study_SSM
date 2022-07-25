@@ -28,9 +28,23 @@ public class IOCByAnnotationTest {
      * 可以通过标识组件注解的value属性设置bean的自定义的id
      *
      * @Autowired: 实现自动装配的注解
-     * 1、能够标识的
+     * 1、能够标识的位置
+     *   1.成员变量上，此时不需要设置成员变量的set方法
+     *   2.set方法上
+     *   3.为当前成员变量赋值的有参构造器上
+     * 2、@Autowired注解的原理
+     *  1.默认通过byType的方式，在IOC容器中通过类型匹配某个bean为属性赋值
+     *  2.若有多个类型匹配的bean，此时会自动转化为byName的方式来实现自动装配的效果
+     *  即将要赋值的属性的属性名作为bean的id匹配某个bean为属性赋值
+     *  3.若byType和byName的方式都无法实现自动装配，即IOC容器中有多个类型匹配的bean
+     *  且这些bean的id和要复制的属性的属性名都不一致，此时抛异常：
+     *  4.此时可以在要赋值的属性上，添加一个注解@Qualifier("value")
+     *  通过该注解的value属性值，指定某个bean的id，然后将这个bean为属性赋值
      *
-     *
+     *  注意：若IOC容器中没有任何一个类型匹配bean，此时抛出异常：NoSuchBeanDefinitionException
+     *  在@Autowired注解中有个required属性，默认值为true，要求必须完成自动装配
+     *  可以将required设置为false，此时能装配则装配，无法装配则使用属性的默认值
+     *  
      */
 
     @Test
