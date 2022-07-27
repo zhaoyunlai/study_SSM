@@ -19,6 +19,7 @@
         <module>spring02_ioc_xml</module>
         <module>spring03_ioc_annotation</module>
         <module>spring04_proxy</module>
+        <module>spring05_aop</module>
     </modules>
 
     <properties>
