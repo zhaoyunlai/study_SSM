@@ -18,6 +18,7 @@
         <module>spring01_helloworld</module>
         <module>spring02_ioc_xml</module>
         <module>spring03_ioc_annotation</module>
+        <module>spring04_proxy</module>
     </modules>
 
     <properties>
