@@ -21,6 +21,9 @@
         <module>spring04_proxy</module>
         <module>spring05_aop</module>
         <module>spring06_transaction</module>
+        <module>springmvc01_helloworld</module>
+        <module>spring_mvc01_helloworld</module>
+        <module>spring_mvc02_demo</module>
     </modules>
 
     <properties>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+
+<h1>index.html</h1>
+
+<a th:href="@{/hello}">测试@RequestMapping注解标识的位置</a><br/>
+<a th:href="@{/abc}">测试@RequestMapping注解的value属性</a>
+<form th:action="@{/hello}" method="post">
+    <input type="submit" value="测试method属性">
+</form>
+
+<a th:href="@{/aba/test/ant}">测试ant风格</a><br/>
+<a th:href="@{/test/rest/2374234/admin}">测试value属性中的占位符</a>
+
+<hr/>
+<form th:action="@{/param/pojo}" method="post">
+    用户名：<input type="text" name="userName"><br/>
+    密码：<input type="password" name="password"><br/>
+    <input type="submit" value="登录"><br/>
+</form>
+</body>
+</html>
