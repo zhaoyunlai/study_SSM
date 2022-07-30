@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+
+<div id="app">
+    <h1>index.html</h1>
+    <input @click="testAjax" type="button" value="测试SpringMVC处理ajax请求">
+    <br/>
+    <input @click="testRequestBody()" type="button" value="使用@RequestBody注解处理json格式的请求参数">
+    <br/>
+    <a th:href="@{/test/responsebody}">测试@ResponseBody注解响应浏览器数据</a>
+    <br/>
+    <input @click="testResponseBodyJson()" type="button" value="使用@ResponseBody注解把实体类响应为json格式的数据">
+    <br/>
+    <input @click="testResponseBodyMap()" type="button" value="使用@ResponseBody注解把Map集合响应为json格式的数据">
+    <br/>
+    <input @click="testResponseBodyList()" type="button" value="使用@ResponseBody注解把List集合响应为json格式的数据">
+    <br/>
+
+</div>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript" th:src="@{/static/js/axios.min.js}"></script>
+<script type="text/javascript">
+
+    /**
+     axios({
+                    url:"",//请求路径
+                    method:"",//请求方式
+                    //请求参数，以name=value&name=value的方式，
+                    // 不管使用的请求方式是get或者post，请求参数都会被拼接到请求地址后
+                    // 此种方式可以通过request.getParameter()获取
+                    params:{},
+                    //请求参数，以json格式发送，
+                    // 请求参数会被保存到请求报文的请求体传输到服务器，因此不能使用get，get没有请求体
+                    // 需要获取请求体，之后把请求体中的json数据进行处理，会使用一些处理json的jar包处理
+                    data:{}
+                }).then(res=>{
+                    console.log(res.data)
+                })
+
+     */
+    var vue = new Vue({
+        el:"#app",
+        methods:{
+            testAjax(){
+                axios.post(
+                    //url，要加上上下文路径
+                    "/SpringMVC/test/ajax?id=1001",
+                    //json类型的数据，会被封装在请求体中
+                    {username:"admin",password:"123456"}
+                ).then(res=>{//请求成功的响应
+                    //服务器返回的结果封装到data属性中
+                    console.log(res.data)
+                })
+            },
+            testRequestBody(){
+                axios.post("/SpringMVC/test/requestbody/json",
+                    {username:"admin",password:"1232423453",age:23,gender:"男"})
+                .then(res=>{
+                    console.log(res.data)
+                })
+            },
+            testResponseBodyJson(){
+                axios.post("/SpringMVC/test/responsebody/json")
+                    .then(res=>{
+                        console.log(res.data)
+                    })
+            },
+            testResponseBodyMap(){
+                axios.post("/SpringMVC/test/responsebody/map")
+                    .then(res=>{
+                        console.log(res.data)
+                    })
+            },
+            testResponseBodyList(){
+                axios.post("/SpringMVC/test/responsebody/list")
+                    .then(res=>{
+                        console.log(res.data)
+                    })
+            },
+        }
+    })
+</script>
+</body>
+</html>

@@ -24,6 +24,7 @@
         <module>spring_mvc01_helloworld</module>
         <module>spring_mvc02_demo</module>
         <module>spring_mvc03_rest</module>
+        <module>spring_mvc04_ajax</module>
     </modules>
 
     <properties>
