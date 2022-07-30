@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @Author: Zhao YunLai
- * @Date: 2022/07/28/19:19
+ * @Date: 2022/07/29/17:41
  * @Description:
  */
 @Controller
-public class PortalController {
-
-//    @RequestMapping("/")
-//    public String portal(){
-//        return "index";
-//    }
+public class TestViewController {
+    @RequestMapping("/test/view/thymeleaf")
+    public String testThymeleaf(){
+        
+        return "success";
+    }
 }

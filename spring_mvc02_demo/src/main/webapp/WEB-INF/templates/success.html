@@ -6,5 +6,8 @@
 </head>
 <body>
 <h1>success.html</h1>
+<p th:text="|请求域中的数据testRequestScope为: ${testRequestScope}|">请求域数据测试</p>
+<p th:text="|session域中的数据为: ${session.testSessionScope}|">session域数据测试</p>
+<p th:text="|application域中的数据为: ${application.testApplicationScope}|">application域数据测试</p>
 </body>
 </html>

@@ -23,5 +23,15 @@
     密码：<input type="password" name="password"><br/>
     <input type="submit" value="登录"><br/>
 </form>
+<hr/>
+<a th:href="@{/test/mav}">测试通过ModelAndView向请求域共享数据</a><br/>
+<a th:href="@{/test/model}">测试通过Model向请求域共享数据</a><br/>
+<a th:href="@{/test/modelMap}">测试通过ModelMap向请求域共享数据</a><br/>
+<a th:href="@{/test/map}">测试通过Map向请求域共享数据</a><br/>
+<hr/>
+<a th:href="@{/test/session}">测试向会话域中共享数据</a><br/>
+<a th:href="@{/test/application}">测试向应用域中共享数据</a><br/>
+<hr/>
+<a th:href="@{/test/view/thymeleaf}">测试SpringMVC视图ThymeleafView</a>
 </body>
 </html>
