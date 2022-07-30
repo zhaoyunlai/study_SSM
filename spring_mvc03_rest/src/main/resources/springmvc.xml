@@ -6,7 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--开启扫描组件-->
-    <context:component-scan base-package="com.zylai.controller"/>
+    <context:component-scan base-package="com.zylai"/>
 
     <!-- 配置Thymeleaf视图解析器 -->
     <bean id="viewResolver"
@@ -37,6 +37,7 @@
 
     <!--视图控制器：为当前的请求直接设置视图名称实现页面跳转-->
     <mvc:view-controller path="/" view-name="index"></mvc:view-controller>
+    <mvc:view-controller path="/to/add" view-name="employee_add"></mvc:view-controller>
 
     <!--
         开启mvc的注解驱动
@@ -44,4 +45,18 @@
         所以此时就需要开启注解驱动
         -->
     <mvc:annotation-driven />
+
+    <!--配置默认的Tomcat的servlet处理静态资源，同时要开启mvc的注解驱动，
+    当前工程的web.xml配置的前端控制器DispatcherServlet的url-pattern是`/`
+
+    而Tomcat的web.xml配置的默认的控制器DefaultServlet的url-pattern也是`/`
+
+    此时，浏览器发送的请求优先会被DispatcherServlet进行处理，
+    但是DispatcherServlet无法处理静态资源。因此需要把静态资源的处理交给默认的servlet，
+    进行如下配置：
+    若配置了`<mvc:default-servlet-handler/>`，此时浏览器发送的所有请求
+    都会被DefaultServlet处理，DispatcherServlet无法进行处理
+    因此还需要开启mvc的注解驱动`<mvc:annotation-driven />`,这样浏览器发送的请求
+    会先被DispatcherServlet处理，无法处理再交给DefaultServlet处理-->
+    <mvc:default-servlet-handler/>
 </beans>
