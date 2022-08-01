@@ -25,6 +25,8 @@
         <module>spring_mvc02_demo</module>
         <module>spring_mvc03_rest</module>
         <module>spring_mvc04_ajax</module>
+        <module>spring_mvc05_extension</module>
+        <module>spring_mvc06_annotation</module>
     </modules>
 
     <properties>
