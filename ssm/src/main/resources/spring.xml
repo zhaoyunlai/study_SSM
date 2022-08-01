@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--扫描组件（除了控制层）-->
+    <context:component-scan base-package="com.zylai.ssm">
+        <!--排除对控制层的扫描-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入jdbc.properties，之后可以通过${key}的方式访问value-->
+    <!--这里的context标签，注意上面引入的-->
+    <context:property-placeholder location="jdbc.properties"></context:property-placeholder>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置SqlSessionFactoryBean，工厂bean，在IOC容器中直接获取工厂造的对象-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--设置mybatis的核心配置文件的路径，当然，也可以不通过配置文件，配置都直接写在这里-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--设置数据源，直接引入spring配置文件中的bean，mybatis中的数据源配置可以不要了-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--设置类型别名所对应的包-->
+        <property name="typeAliasesPackage" value="com.zylai.ssm.pojo"/>
+        <!--设置映射文件的路径，只有映射文件的包和mapper接口的包不一致时才需要设置-->
+        <!--<property name="mapperLocations" value="classpath:com/zylai/ssm/mapper/*.xml"/>-->
+    </bean>
+
+    <!--mapper扫描，把指定的包下面所有的mapper接口，
+    通过SqlSessionFactory创建SqlSession
+    然后SqlSession创建mapper的代理对象放到IOC容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.zylai.ssm.mapper"/>
+    </bean>
+
+</beans>
