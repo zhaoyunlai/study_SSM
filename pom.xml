@@ -27,6 +27,7 @@
         <module>spring_mvc04_ajax</module>
         <module>spring_mvc05_extension</module>
         <module>spring_mvc06_annotation</module>
+        <module>spring_mvc07_listener</module>
     </modules>
 
     <properties>
