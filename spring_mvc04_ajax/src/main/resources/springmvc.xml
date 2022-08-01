@@ -47,4 +47,10 @@
 
     <!--处理静态资源-->
     <mvc:default-servlet-handler/>
+
+    <!--必须通过文件解析器的解析才能将文件转换为MultipartFile对象
+        这里的id必须是multipartResolver，因为这里是根据id获取bean的-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--<property name="defaultEncoding" value="UTF-8"/>-->
+    </bean>
 </beans>

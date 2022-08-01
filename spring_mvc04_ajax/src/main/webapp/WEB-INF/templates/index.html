@@ -22,7 +22,12 @@
     <br/>
 
     <hr/>
-    <a th:href="@{/test/down}">下载图片</a>
+    <a th:href="@{/test/down}">下载图片</a><br/>
+<!--    上传文件，要求方式必须为post，数据类型传输为二进制形式-->
+    <form th:action="@{/test/up}" method="post" enctype="multipart/form-data">
+        头像：<input type="file" name="photo"><br/>
+        <input type="submit" value="上传">
+    </form>
 </div>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script type="text/javascript" th:src="@{/static/js/axios.min.js}"></script>
