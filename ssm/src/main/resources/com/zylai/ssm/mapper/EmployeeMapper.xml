@@ -4,4 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zylai.ssm.mapper.EmployeeMapper">
 
+    <!--List<Employee> getAllEmployee();-->
+    <select id="getAllEmployee" resultType="Employee">
+        select * from t_emp
+    </select>
+
+    <!--void addEmployee(Employee employee);-->
+    <insert id="addEmployee">
+        insert into t_emp values(null,#{empName},#{age},#{gender},#{email})
+    </insert>
 </mapper>

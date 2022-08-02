@@ -2,7 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.2.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!--扫描组件（除了控制层）-->
     <context:component-scan base-package="com.zylai.ssm">
@@ -12,7 +18,8 @@
 
     <!--引入jdbc.properties，之后可以通过${key}的方式访问value-->
     <!--这里的context标签，注意上面引入的-->
-    <context:property-placeholder location="jdbc.properties"></context:property-placeholder>
+    <!--这里需要加上classpath-->
+    <context:property-placeholder location="classpath:jdbc.properties"></context:property-placeholder>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="${jdbc.driver}"/>
@@ -35,9 +42,22 @@
 
     <!--mapper扫描，把指定的包下面所有的mapper接口，
     通过SqlSessionFactory创建SqlSession
-    然后SqlSession创建mapper的代理对象放到IOC容器中-->
+    然后SqlSession创建mapper的代理对象放到IOC容器中
+
+    ps:其实直接在mapper接口加上@Mapper注解效果一样
+    -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.zylai.ssm.mapper"/>
     </bean>
 
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--
+         开启事务的注解驱动
+        将使用注解@Transactional标识的方法或类中所有的方法进行事务管理
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
